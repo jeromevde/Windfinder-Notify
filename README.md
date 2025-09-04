@@ -4,6 +4,8 @@ A modular Python script to scrape wind speed forecasts from Windfinder and send 
 
 Runs daily at 8 AM UTC.
 
+![alt text](windfinder.png)
+
 ## Configuration
 Edit `config.yaml`:
 ```yaml
@@ -17,5 +19,3 @@ spots:
     end_hour: 20
 ```
 
-## License
-MIT
