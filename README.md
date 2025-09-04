@@ -1,8 +1,8 @@
 # Windfinder-Notify
 
-A modular Python script to scrape wind speed forecasts from Windfinder and send email notifications for kitesurfing spots when conditions meet thresholds.
+Scrape wind speed forecasts from Windfinder and send email notifications for kitesurfing spots when for example wind speeds superior to 20 knots are detected for 3 consecutive hours
 
-Runs daily at 8 AM UTC.
+Runs daily at 8 AM UTC
 
 ![alt text](windfinder.png)
 
@@ -12,10 +12,10 @@ Edit `config.yaml`:
 spots:
   brouwersdam:
     url: https://nl.windfinder.com/weatherforecast/brouwersdam
-    emails: [user@example.com]
-    threshold: 20
-    min_hours: 3
-    start_hour: 8
-    end_hour: 20
+    emails: [user@example.com] # emails to be notified
+    threshold: 20 # windspeed threshold
+    min_hours: 3 # number of consecutive hours
+    start_hour: 8 # start of daily timespan of interest
+    end_hour: 20 # end of daily timespan of interest
 ```
 
