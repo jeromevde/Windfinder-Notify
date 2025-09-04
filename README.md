@@ -7,7 +7,7 @@ Runs daily at 8 AM UTC
 ![alt text](windfinder.png)
 
 ## Configuration
-Edit `config.yaml`:
+Edit `config.yaml`: *(Feel free to open a PR, will be accepted)*
 ```yaml
 spots:
   brouwersdam:
