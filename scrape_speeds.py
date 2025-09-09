@@ -18,4 +18,5 @@ def get_speed_values(url):
 
 if __name__ == "__main__":
     speeds = get_speed_values(URL)
+    print(speeds)
 

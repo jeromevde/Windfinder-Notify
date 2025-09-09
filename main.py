@@ -35,7 +35,7 @@ def send_notification(emails, spot, config):
 def has_consecutive_high(speeds, threshold, min_consecutive):
     count = 0
     for speed in speeds:
-        if int(speed) > threshold:
+        if int(speed) >= threshold:
             count += 1
             if count >= min_consecutive:
                 return True
