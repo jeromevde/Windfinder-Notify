@@ -18,18 +18,19 @@ def load_config():
     with open('config.yaml', 'r') as f:
         return yaml.safe_load(f)
 
-def send_notification(emails, spot, config):
-    subject = f"Wind Alert for {spot}"
-    body = f"Good winds detected at {spot}! Check the forecast."
+def send_notification(email, spots_and_links):
+    spots_str = ', '.join([spot for spot, _ in spots_and_links])
+    subject = f"Good conditions detected for {spots_str}"
+    body = '\n'.join([f"{spot}: {url}" for spot, url in spots_and_links])
     msg = MIMEText(body)
     msg['Subject'] = subject
     msg['From'] = SMTP_USERNAME
-    msg['To'] = ', '.join(emails)
+    msg['To'] = email
 
     server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     server.starttls()
     server.login(SMTP_USERNAME, SMTP_PASSWORD)
-    server.sendmail(SMTP_USERNAME, emails, msg.as_string())
+    server.sendmail(SMTP_USERNAME, [email], msg.as_string())
     server.quit()
 
 def has_consecutive_high(speeds, threshold, min_consecutive):
@@ -57,18 +58,24 @@ def check_conditions(speeds, threshold, min_hours, start_hour, end_hour):
 
 def main():
     config = load_config()
+    notifications = {}
     for spot, details in config['spots'].items():
-        logging.info(f"Scraping speeds for {spot}")
         speeds = get_speed_values(details['url'])
         if len(speeds) != 72:
             logging.warning(f"Unexpected number of speeds for {spot}: {len(speeds)}")
             continue
         logging.info(f"Checking conditions for {spot}: threshold={details['threshold']}, min_hours={details['min_hours']}")
         if check_conditions(speeds, details['threshold'], details['min_hours'], details['start_hour'], details['end_hour']):
-            logging.info(f"Sending notification for {spot} to {details['emails']}")
-            send_notification(details['emails'], spot, config)
+            logging.info(("Sending notification for {spot} to {details['emails']}"))
+            for email in details['emails']:
+                if email not in notifications:
+                    notifications[email] = []
+                notifications[email].append((spot, details['url']))
         else:
             logging.info(f"No notification needed for {spot}")
+    
+    for email, spots_and_links in notifications.items():
+        logging.info(f"Sending aggregated notification to {email} for {len(spots_and_links)} spots")
+        send_notification(email, spots_and_links)
 
-if __name__ == "__main__":
-    main()
+main()
