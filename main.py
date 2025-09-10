@@ -66,7 +66,7 @@ def main():
             continue
         logging.info(f"Checking conditions for {spot}: threshold={details['threshold']}, min_hours={details['min_hours']}")
         if check_conditions(speeds, details['threshold'], details['min_hours'], details['start_hour'], details['end_hour']):
-            logging.info(("Sending notification for {spot} to {details['emails']}"))
+            logging.info(f"Sending notification for {spot} to {details['emails']}")
             for email in details['emails']:
                 if email not in notifications:
                     notifications[email] = []
