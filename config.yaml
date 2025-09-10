@@ -3,7 +3,7 @@ spots:
     url: https://nl.windfinder.com/weatherforecast/brouwersdam
     emails:
       - je.vanderelst@gmail.com
-    threshold: 20
+    threshold: 18
     min_hours: 3
     start_hour: 8
     end_hour: 20
@@ -12,7 +12,7 @@ spots:
     url: https://nl.windfinder.com/weatherforecast/knokke-heist
     emails:
       - je.vanderelst@gmail.com
-    threshold: 20
+    threshold: 18
     min_hours: 3
     start_hour: 8
     end_hour: 20
@@ -21,7 +21,7 @@ spots:
     url: https://nl.windfinder.com/weatherforecast/oosterschelde_oesterdam
     emails:
       - je.vanderelst@gmail.com
-    threshold: 20
+    threshold: 18
     min_hours: 3
     start_hour: 8
     end_hour: 20
