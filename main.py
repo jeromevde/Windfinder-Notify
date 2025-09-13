@@ -18,11 +18,18 @@ def load_config():
     with open('config.yaml', 'r') as f:
         return yaml.safe_load(f)
 
-def send_notification(email, spots_and_links):
-    spots_str = ', '.join([spot for spot, _ in spots_and_links])
+def send_notification(email, spots_and_details):
+    spots_str = ', '.join([spot for spot, _, _, _, _ in spots_and_details])
     subject = f"Good conditions detected for {spots_str}"
-    body = '\n'.join([f"{spot}: {url}" for spot, url in spots_and_links])
-    msg = MIMEText(body)
+    
+    # Build HTML body with clickable links
+    body = '<html><body>'
+    for spot, url, threshold, start_hour, end_hour in spots_and_details:
+        body += f'<p>{spot}: winds above {threshold} knots detected between {start_hour} and {end_hour} hours</p>'
+        body += f'<p><a href="{url}">{spot}</a></p>'
+    body += '</body></html>'
+    
+    msg = MIMEText(body, 'html')
     msg['Subject'] = subject
     msg['From'] = SMTP_USERNAME
     msg['To'] = email
@@ -70,12 +77,12 @@ def main():
             for email in details['emails']:
                 if email not in notifications:
                     notifications[email] = []
-                notifications[email].append((spot, details['url']))
+                notifications[email].append((spot, details['url'], details['threshold'], details['start_hour'], details['end_hour']))
         else:
             logging.info(f"No notification needed for {spot}")
     
-    for email, spots_and_links in notifications.items():
-        logging.info(f"Sending aggregated notification to {email} for {len(spots_and_links)} spots")
-        send_notification(email, spots_and_links)
+    for email, spots_and_details in notifications.items():
+        logging.info(f"Sending aggregated notification to {email} for {len(spots_and_details)} spots")
+        send_notification(email, spots_and_details)
 
 main()
