@@ -25,8 +25,7 @@ def send_notification(email, spots_and_details):
     # Build HTML body with clickable links
     body = '<html><body>'
     for spot, url, threshold, start_hour, end_hour in spots_and_details:
-        body += f'<p>{spot}: winds above {threshold} knots detected between {start_hour} and {end_hour} hours</p>'
-        body += f'<p><a href="{url}">{spot}</a></p>'
+        body += f'<p>{spot}: winds above {threshold} knots detected between {start_hour}h and {end_hour}h: <a href="{url}">{spot}</a></p>'
     body += '</body></html>'
     
     msg = MIMEText(body, 'html')
